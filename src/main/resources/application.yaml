@@ -1,0 +1,20 @@
+server:
+  port: 8185
+  servlet:
+    context-path: /tasks-desk
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: hell
+    password: he11
+  hibernate:
+    ddl-auto: update # When you launch the application for the first time - switch "none" at "create"
+    show-sql: true
+    database: products
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    open-in-view: false
+    generate-ddl: true
+
+  flyway:
+    baseline-on-migrate: true
