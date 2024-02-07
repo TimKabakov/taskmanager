@@ -1,6 +1,6 @@
 package hell.prod.taskmanager.core.entities;
 
-import hell.prod.taskmanager.core.utils.taskStatus;
+import hell.prod.taskmanager.core.utils.TaskStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,11 +23,10 @@ public class Task {
     @Column(name = "task")
     private String task;
 
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
     @Column(name = "status")
-    private taskStatus status;
+    private TaskStatus status;
 }

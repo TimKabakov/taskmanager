@@ -1,6 +1,7 @@
 package hell.prod.taskmanager.core.services;
 
 import hell.prod.taskmanager.core.entities.Task;
+import hell.prod.taskmanager.core.entities.User;
 import hell.prod.taskmanager.core.exeptions.ResourceNotFoundExeption;
 import hell.prod.taskmanager.core.repositories.TasksRepository;
 import hell.prod.taskmanager.core.repositories.specifications.TasksSpecifications;
@@ -17,6 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class TasksService {
     private final TasksRepository tasksRepository;
+    private final UsersService usersService;
 
     public Page<Task> findAll(String partName,String partTaskName, Integer page){
         Specification<Task> spec = Specification.where(null);
@@ -38,13 +40,34 @@ public class TasksService {
         tasksRepository.deleteById(id);
     }
     @Transactional
-    public Task update(Task task){
-       Optional<Task> taskUpdate = tasksRepository.findById(task.getId().describeConstable().orElseThrow(() -> new ResourceNotFoundExeption("Невозможно обновление продукта, не найден в базе, id: " + task.getId())));
+    public Optional<Task> updateUser(Long taskId, String userName){
+       Optional<Task> taskUpdate = tasksRepository.findById(taskId.describeConstable().orElseThrow(() ->
+               new ResourceNotFoundExeption("Невозможно обновление задания, не найдено в базе")));
        if (taskUpdate.isPresent()){
-           taskUpdate.get().setUser(task.getUser());
-           taskUpdate.get().setTask(task.getTask());
-           return taskUpdate.get();
+           User user = usersService.findByName(userName);
+           taskUpdate.get().setUser(user);
        }
-       return task;
+       return taskUpdate;
     }
+    @Transactional
+    public Task updateTask(Task task){
+        Optional<Task> taskUpdate = tasksRepository.findById(task.getId().describeConstable().orElseThrow(() ->
+                new ResourceNotFoundExeption("Невозможно обновление задания, не найдено в базе, задача: " + task.getName())));
+        if (taskUpdate.isPresent()){
+            taskUpdate.get().setTask(task.getTask());
+            return taskUpdate.get();
+        }
+        return task;
+    }
+    @Transactional
+    public Task updateStatus(Task task){
+        Optional<Task> taskUpdate = tasksRepository.findById(task.getId().describeConstable().orElseThrow(() ->
+                new ResourceNotFoundExeption("Невозможно обновление задания, не найдено в базе, задача: " + task.getName())));
+        if (taskUpdate.isPresent()){
+            taskUpdate.get().setStatus(task.getStatus());
+            return taskUpdate.get();
+        }
+        return task;
+    }
+
 }

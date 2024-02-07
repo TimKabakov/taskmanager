@@ -1,6 +1,6 @@
 package hell.prod.taskmanager.core.utils;
 
-public enum taskStatus {
+public enum TaskStatus {
     CREATED("created"),
     INPROGRESS("in progress"),
     DONE("done"),
@@ -9,7 +9,7 @@ public enum taskStatus {
 
     private final String status;
 
-    taskStatus(String status) {
+    TaskStatus(String status) {
         this.status = status;
     }
 
