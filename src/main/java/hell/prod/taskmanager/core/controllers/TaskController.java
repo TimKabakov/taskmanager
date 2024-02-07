@@ -10,7 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/products")
+@RequestMapping("/api/v1/tasks")
 @RequiredArgsConstructor
 @Tag(name = "Задачи", description = "Методы работы с задачами")
 public class TaskController {
