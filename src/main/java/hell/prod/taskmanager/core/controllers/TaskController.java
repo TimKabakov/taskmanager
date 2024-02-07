@@ -32,7 +32,7 @@ public class TaskController {
     }
     @PutMapping
     public Task changeTaskUser(@RequestBody Task task){
-        return tasksService.update(task);
+        return tasksService.updateTask(task);
     }
 
     @DeleteMapping
