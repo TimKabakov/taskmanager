@@ -31,7 +31,7 @@ public class TaskController {
         return tasksService.findById(id).orElseThrow(() -> new ResourceNotFoundExeption("Задача не найдена" + id));
     }
     @PutMapping
-    public Task changeTaskUser(@RequestBody Task task){
+    public Task updateTask(@RequestBody Task task){
         return tasksService.updateTask(task);
     }
 
