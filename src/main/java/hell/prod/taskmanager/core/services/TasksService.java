@@ -1,10 +1,12 @@
 package hell.prod.taskmanager.core.services;
 
+import hell.prod.taskmanager.core.converter.TaskConverter;
 import hell.prod.taskmanager.core.entities.Task;
 import hell.prod.taskmanager.core.entities.User;
 import hell.prod.taskmanager.core.exeptions.ResourceNotFoundExeption;
 import hell.prod.taskmanager.core.repositories.TasksRepository;
 import hell.prod.taskmanager.core.repositories.specifications.TasksSpecifications;
+import hell.prod.taskmanager.dto.TaskDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -19,6 +21,7 @@ import java.util.Optional;
 public class TasksService {
     private final TasksRepository tasksRepository;
     private final UsersService usersService;
+    private final TaskConverter taskConverter;
 
     public Page<Task> findAll(String partName,String partTaskName, Integer page){
         Specification<Task> spec = Specification.where(null);
@@ -50,7 +53,17 @@ public class TasksService {
        return taskUpdate;
     }
     @Transactional
-    public Task updateTask(Task task){
+    public TaskDto updateTask(TaskDto taskDto){
+        Optional<Task> taskUpdate = tasksRepository.findById(taskDto.getId().describeConstable().orElseThrow(() ->
+                new ResourceNotFoundExeption("Невозможно обновление задания, не найдено в базе, задача: " + taskDto.getName())));
+        if (taskUpdate.isPresent()){
+            taskUpdate.get().setTask(taskDto.getTask());
+            return taskConverter.entityToDto(taskUpdate.get());
+        }
+        return taskDto;
+    }
+    @Transactional
+    public Task createTask(Task task){
         Optional<Task> taskUpdate = tasksRepository.findById(task.getId().describeConstable().orElseThrow(() ->
                 new ResourceNotFoundExeption("Невозможно обновление задания, не найдено в базе, задача: " + task.getName())));
         if (taskUpdate.isPresent()){

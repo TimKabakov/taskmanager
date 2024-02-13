@@ -17,4 +17,12 @@ public enum TaskStatus {
     public String toString() {
         return this.status;
     }
+    public static TaskStatus fromString(String name){
+        for(TaskStatus t: TaskStatus.values()){
+            if(t.name().equalsIgnoreCase(name)){
+                return t;
+            }
+        }
+        throw new IllegalArgumentException("No such status" + name);
+    }
 }
