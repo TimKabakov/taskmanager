@@ -62,14 +62,9 @@ public class TasksService {
         }
         return taskDto;
     }
-    @Transactional
+
     public Task createTask(Task task){
-        Optional<Task> taskUpdate = tasksRepository.findById(task.getId().describeConstable().orElseThrow(() ->
-                new ResourceNotFoundExeption("Невозможно обновление задания, не найдено в базе, задача: " + task.getName())));
-        if (taskUpdate.isPresent()){
-            taskUpdate.get().setTask(task.getTask());
-            return taskUpdate.get();
-        }
+        tasksRepository.save(task);
         return task;
     }
     @Transactional

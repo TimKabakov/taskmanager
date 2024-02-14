@@ -41,7 +41,7 @@ public class TaskController {
             @RequestParam(name = "part_task_name",required = false)String partTaskName
     ){
         if(page<1){
-            page =1;
+            page = 1;
         }
         return tasksService.findAll(partName,partTaskName, page).map(taskConverter::entityToDto);
     }
@@ -62,8 +62,7 @@ public class TaskController {
     public TaskDto createNewTask(@RequestBody TaskDto taskDto){
         Task task = new Task(taskDto.getId(),taskDto.getName(), taskDto.getTask(),
                 usersService.findByName(taskDto.getName()), TaskStatus.fromString(taskDto.getStatus()));
-        tasksService.createTask(task);
-        return taskConverter.entityToDto(task);
+        return taskConverter.entityToDto(tasksService.createTask(task));
     }
     @PutMapping
     public TaskDto updateTask(@RequestBody TaskDto taskDto){
